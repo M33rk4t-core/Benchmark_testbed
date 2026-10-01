@@ -1,0 +1,60 @@
+{
+  "spec_version": 1,
+  "id": "lark",
+  "title": "Lark Notices",
+  "tier": 10,
+  "stack": "flask",
+  "port": 8090,
+  "profile": "Works circulars. The notice body is compiled as a template. The subject is filled into a fixed template.",
+  "approximate_tokens": 450,
+  "sources": ["app.py"],
+  "routes": [
+    {"method": "GET", "path": "/"},
+    {"method": "GET", "path": "/notices"},
+    {"method": "POST", "path": "/notices"}
+  ],
+  "parameters": [
+    {
+      "id": "lark.body",
+      "name": "body",
+      "in": "query",
+      "method": "GET",
+      "route": "/notices",
+      "value_type": "string",
+      "scheme": "raw_passthrough",
+      "control": null,
+      "sink": {
+        "class": "server_template",
+        "encoded": false,
+        "bound": false,
+        "symbol": "render_notice",
+        "note": "Rejected above 4000 characters. Shorter values are compiled as the template source."
+      },
+      "carriers": [
+        {"in": "body", "method": "POST", "route": "/notices"}
+      ]
+    },
+    {
+      "id": "lark.subject",
+      "name": "subject",
+      "in": "query",
+      "method": "GET",
+      "route": "/notices",
+      "value_type": "string",
+      "scheme": "bounded_control",
+      "control": "Rejected above 160 characters. The value is rendered only as a variable in a fixed autoescaped template.",
+      "sink": {
+        "class": "server_template",
+        "encoded": true,
+        "bound": false,
+        "symbol": "render_subject"
+      },
+      "carriers": [
+        {"in": "body", "method": "POST", "route": "/notices"}
+      ],
+      "other_uses": [
+        {"class": "html_attribute", "encoded": true, "symbol": "notices"}
+      ]
+    }
+  ]
+}

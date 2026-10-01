@@ -1,0 +1,82 @@
+{
+  "spec_version": 1,
+  "id": "sable",
+  "title": "Sable Foundry",
+  "tier": 8,
+  "stack": "graphql",
+  "port": 8088,
+  "profile": "Type specimen index. The same lookup is exposed as a GraphQL field and as an HTML form.",
+  "approximate_tokens": 700,
+  "sources": ["app.py"],
+  "routes": [
+    {"method": "GET", "path": "/"},
+    {"method": "GET", "path": "/specimens"},
+    {"method": "POST", "path": "/graphql"}
+  ],
+  "parameters": [
+    {
+      "id": "sable.name",
+      "name": "name",
+      "in": "graphql_argument",
+      "method": "POST",
+      "route": "/graphql",
+      "field": "specimens",
+      "value_type": "string",
+      "scheme": "raw_passthrough",
+      "control": null,
+      "sink": {
+        "class": "sql_interpolation",
+        "encoded": false,
+        "bound": false,
+        "symbol": "load_specimens",
+        "note": "Percent signs are doubled so the database driver preserves them. The value is still concatenated into the statement."
+      },
+      "carriers": [
+        {"in": "query", "method": "GET", "route": "/specimens"}
+      ],
+      "other_uses": [
+        {"class": "html_attribute", "encoded": true, "symbol": "specimens_page"}
+      ]
+    },
+    {
+      "id": "sable.edition",
+      "name": "edition",
+      "in": "graphql_argument",
+      "method": "POST",
+      "route": "/graphql",
+      "field": "specimens",
+      "value_type": "integer",
+      "scheme": "bounded_control",
+      "control": "The GraphQL Int type rejects non-integers. The resolver clamps the value to 1..30 and binds it as a placeholder. The HTML form accepts only a 1 to 2 digit integer in that same range.",
+      "sink": {
+        "class": "sql_limit",
+        "encoded": false,
+        "bound": true,
+        "symbol": "load_specimens"
+      },
+      "carriers": [
+        {"in": "query", "method": "GET", "route": "/specimens"}
+      ]
+    },
+    {
+      "id": "sable.press",
+      "name": "press",
+      "in": "graphql_argument",
+      "method": "POST",
+      "route": "/graphql",
+      "field": "specimens",
+      "value_type": "enum",
+      "scheme": "bounded_control",
+      "control": "GraphQL accepts only the HARBOR, ESTUARY, and RIDGE enum values. The HTML form keeps harbor, estuary, or ridge. Either value is then bound as a placeholder.",
+      "sink": {
+        "class": "sql_equality",
+        "encoded": true,
+        "bound": true,
+        "symbol": "load_specimens"
+      },
+      "carriers": [
+        {"in": "query", "method": "GET", "route": "/specimens"}
+      ]
+    }
+  ]
+}

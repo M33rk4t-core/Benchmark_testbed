@@ -1,0 +1,68 @@
+{
+  "spec_version": 1,
+  "id": "brinehouse",
+  "title": "Brinehouse Proofs",
+  "tier": 9,
+  "stack": "fastapi",
+  "port": 8089,
+  "profile": "Prepress proof desk. One search is assembled as a shell command. The plate file and line count are passed as an argument list.",
+  "approximate_tokens": 500,
+  "sources": ["app.py"],
+  "routes": [
+    {"method": "GET", "path": "/"},
+    {"method": "GET", "path": "/proofs"}
+  ],
+  "parameters": [
+    {
+      "id": "brinehouse.mark",
+      "name": "mark",
+      "in": "query",
+      "method": "GET",
+      "route": "/proofs",
+      "value_type": "string",
+      "scheme": "raw_passthrough",
+      "control": null,
+      "sink": {
+        "class": "shell_command",
+        "encoded": false,
+        "bound": false,
+        "symbol": "search_marks"
+      },
+      "other_uses": [
+        {"class": "html_attribute", "encoded": true, "symbol": "proofs"}
+      ]
+    },
+    {
+      "id": "brinehouse.plate",
+      "name": "plate",
+      "in": "query",
+      "method": "GET",
+      "route": "/proofs",
+      "value_type": "string",
+      "scheme": "bounded_control",
+      "control": "Kept only for harbor-01.txt, estuary-02.txt, or ridge-03.txt, then passed as one argv element with shell disabled.",
+      "sink": {
+        "class": "shell_argv",
+        "encoded": false,
+        "bound": false,
+        "symbol": "plate_excerpt"
+      }
+    },
+    {
+      "id": "brinehouse.copies",
+      "name": "copies",
+      "in": "query",
+      "method": "GET",
+      "route": "/proofs",
+      "value_type": "integer",
+      "scheme": "bounded_control",
+      "control": "FastAPI Query accepts only an integer from 1 through 12. The decimal is then one argv element with shell disabled.",
+      "sink": {
+        "class": "shell_argv",
+        "encoded": false,
+        "bound": false,
+        "symbol": "plate_excerpt"
+      }
+    }
+  ]
+}

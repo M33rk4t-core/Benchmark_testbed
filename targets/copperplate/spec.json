@@ -1,0 +1,53 @@
+{
+  "spec_version": 1,
+  "id": "copperplate",
+  "title": "Copperplate Desk",
+  "tier": 11,
+  "stack": "node",
+  "port": 8091,
+  "profile": "Stored drawing notes. One sheet path is joined and read as given. The plate choice is an allowlist.",
+  "approximate_tokens": 500,
+  "sources": ["server.js"],
+  "routes": [
+    {"method": "GET", "path": "/"},
+    {"method": "GET", "path": "/drawings"}
+  ],
+  "parameters": [
+    {
+      "id": "copperplate.sheet",
+      "name": "sheet",
+      "in": "query",
+      "method": "GET",
+      "route": "/drawings",
+      "value_type": "string",
+      "scheme": "raw_passthrough",
+      "control": null,
+      "sink": {
+        "class": "filesystem_read",
+        "encoded": false,
+        "bound": false,
+        "symbol": "readSheet",
+        "note": "Joined onto the drawings directory and read when it names a file. The path is not confined to that directory."
+      },
+      "other_uses": [
+        {"class": "html_attribute", "encoded": true, "symbol": "drawingsPage"}
+      ]
+    },
+    {
+      "id": "copperplate.plate",
+      "name": "plate",
+      "in": "query",
+      "method": "GET",
+      "route": "/drawings",
+      "value_type": "string",
+      "scheme": "bounded_control",
+      "control": "Kept only for harbor, estuary, or ridge, then read from that stem plus a fixed .txt suffix.",
+      "sink": {
+        "class": "filesystem_read",
+        "encoded": false,
+        "bound": false,
+        "symbol": "readPlate"
+      }
+    }
+  ]
+}

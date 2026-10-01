@@ -85,6 +85,10 @@ wait_http "http://localhost:8084/track"
 wait_http "http://localhost:8085/apply"
 wait_http "http://localhost:8086/holdings"
 wait_http "http://localhost:8087/reading-room"
+wait_http "http://localhost:8088/specimens"
+wait_http "http://localhost:8089/proofs"
+wait_http "http://localhost:8090/notices"
+wait_http "http://localhost:8091/drawings"
 
 mkdir -p snapshots
 capture "http://localhost:8081/catalog?q=harbor&page=1" snapshots/fieldnote-catalog.html
@@ -94,6 +98,10 @@ capture "http://localhost:8084/track?limit=8" snapshots/waybill-track.html
 capture "http://localhost:8085/apply" snapshots/halden-apply.html
 capture "http://localhost:8086/holdings?page=1" snapshots/stockwell-holdings.html
 capture "http://localhost:8087/reading-room?gloss=Marginal%20note%20in%20a%20later%20hand.&shelf=west-cloister&leaf=2" snapshots/vellum-reading-room.html
+capture "http://localhost:8088/specimens?name=Harbor&edition=8&press=harbor" snapshots/sable-specimens.html
+capture "http://localhost:8089/proofs?mark=harbor&plate=harbor-01.txt&copies=2" snapshots/brinehouse-proofs.html
+capture "http://localhost:8090/notices?subject=Thursday%20proof&body=The%20Thursday%20proof%20is%20ready." snapshots/lark-notices.html
+capture "http://localhost:8091/drawings?sheet=harbor.txt&plate=harbor" snapshots/copperplate-drawings.html
 
 jar="$(mktemp)"
 curl -sS -c "$jar" -b "$jar" -o /dev/null \
@@ -117,5 +125,9 @@ echo "  Waybill Desk       http://localhost:8084/track"
 echo "  Halden Seminar     http://localhost:8085/apply"
 echo "  Stockwell Register http://localhost:8086/holdings"
 echo "  Vellum Room        http://localhost:8087/reading-room"
+echo "  Sable Foundry      http://localhost:8088/specimens"
+echo "  Brinehouse Proofs  http://localhost:8089/proofs"
+echo "  Lark Notices       http://localhost:8090/notices"
+echo "  Copperplate Desk   http://localhost:8091/drawings"
 echo "WordPress desk login is archivist / local-archivist."
 echo "Frozen pages are in snapshots/."

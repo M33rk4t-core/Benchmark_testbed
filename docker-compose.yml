@@ -113,5 +113,38 @@ services:
       DB_NAME: vellum
       PORT: "8087"
 
+  sable:
+    build: ./targets/sable
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8088:8088"
+    environment:
+      DB_HOST: db
+      DB_USER: bench
+      DB_PASSWORD: bench-local-only
+      DB_NAME: sable
+      PORT: "8088"
+
+  brinehouse:
+    build: ./targets/brinehouse
+    ports:
+      - "8089:8089"
+
+  lark:
+    build: ./targets/lark
+    ports:
+      - "8090:8090"
+    environment:
+      PORT: "8090"
+
+  copperplate:
+    build: ./targets/copperplate
+    ports:
+      - "8091:8091"
+    environment:
+      PORT: "8091"
+
 volumes:
   db-data:

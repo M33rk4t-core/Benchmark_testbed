@@ -1,6 +1,6 @@
 # Local evaluation services
 
-Seven local web applications for static review, DOM capture, and input-sink scoring. Each application lives in `targets/<name>/` and carries its own `spec.json`. That file is the ground truth for how each parameter is handled: raw passthrough, a state change with no authorization check, or a bounded control.
+Eleven local web applications for static review, DOM capture, and input-sink scoring. Each application lives in `targets/<name>/` and carries its own `spec.json`. That file is the ground truth for how each parameter is handled: raw passthrough, a state change with no authorization check, or a bounded control.
 
 | Service | Stack | Port | Scored route |
 | --- | --- | --- | --- |
@@ -11,6 +11,10 @@ Seven local web applications for static review, DOM capture, and input-sink scor
 | Halden Seminar | Express | 8085 | `/apply` |
 | Stockwell Register | Flask | 8086 | `/holdings` |
 | Vellum Room | Node | 8087 | `/reading-room` |
+| Sable Foundry | GraphQL | 8088 | `/graphql` |
+| Brinehouse Proofs | FastAPI | 8089 | `/proofs` |
+| Lark Notices | Flask | 8090 | `/notices` |
+| Copperplate Desk | Node | 8091 | `/drawings` |
 
 ## Start
 
@@ -26,7 +30,7 @@ Docker is required.
 
 The script builds the containers, installs the three WordPress sites, and writes frozen HTML into `snapshots/`. WordPress desk login for the local sites is `archivist` / `local-archivist`. Database user `bench` uses password `bench-local-only` and is reachable only on the compose network.
 
-MySQL initializes `init-db.sql` only when the data volume is first created. To seed again, remove that volume:
+MySQL initializes `init-db.sql` only when the data volume is first created. Sable uses that seed, so an existing volume will not grow the new schema. To seed again, remove that volume:
 
 ```bash
 docker compose down -v

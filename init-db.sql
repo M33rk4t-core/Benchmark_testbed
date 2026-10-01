@@ -5,6 +5,7 @@ CREATE DATABASE IF NOT EXISTS waybill CHARACTER SET utf8mb4 COLLATE utf8mb4_unic
 CREATE DATABASE IF NOT EXISTS halden CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 CREATE DATABASE IF NOT EXISTS stockwell CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 CREATE DATABASE IF NOT EXISTS vellum CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE IF NOT EXISTS sable CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 CREATE USER IF NOT EXISTS 'bench'@'%' IDENTIFIED BY 'bench-local-only';
 GRANT ALL PRIVILEGES ON fieldnote.* TO 'bench'@'%';
@@ -14,6 +15,7 @@ GRANT ALL PRIVILEGES ON waybill.* TO 'bench'@'%';
 GRANT ALL PRIVILEGES ON halden.* TO 'bench'@'%';
 GRANT ALL PRIVILEGES ON stockwell.* TO 'bench'@'%';
 GRANT ALL PRIVILEGES ON vellum.* TO 'bench'@'%';
+GRANT ALL PRIVILEGES ON sable.* TO 'bench'@'%';
 FLUSH PRIVILEGES;
 
 USE fieldnote;
@@ -202,3 +204,23 @@ INSERT INTO vm_folios (shelf_code, siglum, work_title, scribe_name, leaf_no, cen
 ('scriptorium', 'MS-40', 'Dye book', 'Marta Quinn', 7, '18th century', 'A margin note on indigo that failed in a wet June.'),
 ('annex', 'MS-51', 'Boundary perambulation', 'Town clerk', 9, '17th century', 'From the oak at the ridge road to the stone in the basin meadow.'),
 ('annex', 'MS-55', 'Shipwright notes', 'Elias Ward', 3, '18th century', 'Scantlings for a work boat of twenty-two feet.');
+
+USE sable;
+
+CREATE TABLE IF NOT EXISTS sb_specimens (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  face_name VARCHAR(120) NOT NULL,
+  founder VARCHAR(120) NOT NULL,
+  cut_year SMALLINT NOT NULL,
+  press_code VARCHAR(32) NOT NULL
+);
+
+INSERT INTO sb_specimens (face_name, founder, cut_year, press_code) VALUES
+('Harbor Text', 'Ivo March', 1924, 'harbor'),
+('Harbor Italic', 'Ivo March', 1926, 'harbor'),
+('Quay Old Style', 'Ruth Pell', 1912, 'harbor'),
+('Estuary Roman', 'Lena Ortiz', 1931, 'estuary'),
+('Estuary Small', 'Lena Ortiz', 1934, 'estuary'),
+('Clay Sans', 'Nora Belk', 1964, 'estuary'),
+('Ridge Grotesk', 'Samir Adeyemi', 1952, 'ridge'),
+('Ridge Condensed', 'Samir Adeyemi', 1958, 'ridge');
