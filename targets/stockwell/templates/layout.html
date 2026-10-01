@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex">
+  <title>{{ title }} · Stockwell</title>
+  <style>
+    body{margin:0;background:#eef1f4;color:#1c2830;font:15px/1.45 "Segoe UI",sans-serif}
+    main{max-width:72rem;margin:0 auto;padding:1.2rem}
+    .mark{letter-spacing:.16em;text-transform:uppercase;font-size:.72rem;color:#0b6e4f}
+    h1{font-weight:560;font-size:1.7rem;margin:.2rem 0 1rem}
+    a{color:#0b6e4f}
+    table{border-collapse:collapse;width:100%;background:#fff}
+    th,td{border:1px solid #d5dde3;padding:.4rem .5rem;text-align:left;vertical-align:top}
+    th{background:#1c2830;color:#f4f7f8;font-weight:560}
+    caption{text-align:left;font-weight:650;padding:.4rem 0}
+    .filters{display:flex;gap:.7rem;flex-wrap:wrap;align-items:end;margin-bottom:1rem}
+    label{display:flex;flex-direction:column;gap:.25rem;font-size:.85rem}
+    input,select,button{font:inherit;padding:.35rem .45rem}
+    button{background:#0b6e4f;color:#fff;border:0}
+    .error{background:#fff4f4;border:1px solid #8d2f2f;padding:.6rem}
+    .nested{margin:0;background:#f7faf8}
+    .nested th{background:#315348}
+  </style>
+</head>
+<body>
+  <main>
+    <p class="mark">Stockwell Register</p>
+    {% block main %}{% endblock %}
+  </main>
+</body>
+</html>

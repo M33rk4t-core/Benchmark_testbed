@@ -1,0 +1,110 @@
+{% extends "layout.html" %}
+{% block main %}
+<h1>Holdings grid</h1>
+<form class="filters" method="get" action="/holdings">
+  <label>Find
+    <input name="q" value="{{ term }}">
+  </label>
+  <label>Status
+    <select name="status">
+      <option value="">Any status</option>
+      {% for code in statuses %}
+      <option value="{{ code }}" {% if code == status %}selected{% endif %}>{{ code }}</option>
+      {% endfor %}
+    </select>
+  </label>
+  <label>Sort column
+    <input name="order" value="{{ order }}">
+  </label>
+  <label>Page
+    <input name="page" value="{{ page }}" inputmode="numeric">
+  </label>
+  <button type="submit">Apply</button>
+</form>
+{% if error %}<p class="error">{{ error }}</p>{% endif %}
+<table class="bands">
+  <caption>Value by status on this filter</caption>
+  <colgroup>
+    <col>
+    <col>
+    <col>
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Status</th>
+      <th>Holdings</th>
+      <th>Book value</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for band in summary %}
+    <tr>
+      <td>{{ band.status_label }}</td>
+      <td>{{ band.holdings }}</td>
+      <td>{{ band.total_value }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="3">No status band matches this filter.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+<table class="holdings">
+  <caption>Register sorted by {{ order }}</caption>
+  <colgroup>
+    <col span="2">
+    <col>
+    <col>
+    <col>
+    <col>
+    <col>
+  </colgroup>
+  <thead>
+    <tr>
+      <th rowspan="2">Tag</th>
+      <th rowspan="2">Asset</th>
+      <th>Site</th>
+      <th>Category</th>
+      <th>Status</th>
+      <th>Acquired</th>
+      <th>Book value</th>
+    </tr>
+    <tr>
+      <th colspan="5">Fund split sits on the following row</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in rows %}
+    <tr class="summary">
+      <th scope="row">{{ row.asset_tag }}</th>
+      <td>{{ row.asset_name }}</td>
+      <td>{{ row.site_name }}</td>
+      <td>{{ row.category_name }}</td>
+      <td>{{ row.status_label }}</td>
+      <td>{{ row.acquired_on }}</td>
+      <td>{{ row.book_value }}</td>
+    </tr>
+    <tr class="detail">
+      <td colspan="7">
+        <table class="nested">
+          <caption>Allocations for {{ row.asset_tag }}</caption>
+          <thead>
+            <tr><th>Fund</th><th>Share</th><th>Parent tag</th></tr>
+          </thead>
+          <tbody>
+            {% for split in row.allocations %}
+            <tr>
+              <td>{{ split.fund }}</td>
+              <td>{{ split.share }}</td>
+              <td>{{ row.asset_tag }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="7">No holdings match this register.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

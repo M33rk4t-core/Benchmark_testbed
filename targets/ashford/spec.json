@@ -1,0 +1,69 @@
+{
+  "spec_version": 1,
+  "id": "ashford",
+  "title": "Ashford Registry",
+  "tier": 2,
+  "stack": "wordpress",
+  "port": 8082,
+  "profile": "Membership directory with block groups, crest SVG, and a modal sheet.",
+  "approximate_tokens": 3500,
+  "sources": ["mu-plugins/core.php"],
+  "routes": [
+    {"method": "GET", "path": "/"},
+    {"method": "GET", "path": "/directory"},
+    {"method": "POST", "path": "/directory"}
+  ],
+  "parameters": [
+    {
+      "id": "ashford.enrollment",
+      "name": "enrollment",
+      "in": "body",
+      "method": "POST",
+      "route": "/directory",
+      "value_type": "string",
+      "scheme": "missing_authorization",
+      "control": "Text is passed through sanitize_text_field before storage. No login, role, or capability check gates the write.",
+      "sink": {
+        "class": "state_update",
+        "encoded": false,
+        "bound": false,
+        "symbol": "ashford_apply_enrollment"
+      }
+    },
+    {
+      "id": "ashford.notice",
+      "name": "notice",
+      "in": "query",
+      "method": "GET",
+      "route": "/directory",
+      "value_type": "string",
+      "scheme": "raw_passthrough",
+      "control": null,
+      "sink": {
+        "class": "html_body",
+        "encoded": false,
+        "bound": false,
+        "symbol": "ashford_render_directory"
+      },
+      "other_uses": [
+        {"class": "html_attribute", "encoded": true, "symbol": "ashford_render_directory"}
+      ]
+    },
+    {
+      "id": "ashford.portrait_url",
+      "name": "portrait_url",
+      "in": "body",
+      "method": "POST",
+      "route": "/directory",
+      "value_type": "string",
+      "scheme": "bounded_control",
+      "control": "Accepted only after wp_verify_nonce for ashford_portrait, then stored with esc_url_raw.",
+      "sink": {
+        "class": "url_option",
+        "encoded": true,
+        "bound": false,
+        "symbol": "ashford_apply_portrait"
+      }
+    }
+  ]
+}

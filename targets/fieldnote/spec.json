@@ -1,0 +1,52 @@
+{
+  "spec_version": 1,
+  "id": "fieldnote",
+  "title": "Fieldnote",
+  "tier": 1,
+  "stack": "wordpress",
+  "port": 8081,
+  "profile": "Seasonal press catalog. Shallow server-rendered list.",
+  "approximate_tokens": 500,
+  "sources": ["mu-plugins/core.php"],
+  "routes": [
+    {"method": "GET", "path": "/"},
+    {"method": "GET", "path": "/catalog"}
+  ],
+  "parameters": [
+    {
+      "id": "fieldnote.q",
+      "name": "q",
+      "in": "query",
+      "method": "GET",
+      "route": "/catalog",
+      "value_type": "string",
+      "scheme": "raw_passthrough",
+      "control": null,
+      "sink": {
+        "class": "sql_interpolation",
+        "encoded": false,
+        "bound": false,
+        "symbol": "fieldnote_catalog_rows"
+      },
+      "other_uses": [
+        {"class": "html_attribute", "encoded": true, "symbol": "fieldnote_render_catalog"}
+      ]
+    },
+    {
+      "id": "fieldnote.page",
+      "name": "page",
+      "in": "query",
+      "method": "GET",
+      "route": "/catalog",
+      "value_type": "integer",
+      "scheme": "bounded_control",
+      "control": "Rejected unless the value is a 1 to 4 digit integer, then cast and clamped to 1..40 before use as a query offset.",
+      "sink": {
+        "class": "sql_offset",
+        "encoded": false,
+        "bound": false,
+        "symbol": "fieldnote_catalog_rows"
+      }
+    }
+  ]
+}

@@ -1,0 +1,117 @@
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: local-root
+    volumes:
+      - db-data:/var/lib/mysql
+      - ./init-db.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-plocal-root"]
+      interval: 5s
+      timeout: 5s
+      retries: 40
+      start_period: 20s
+
+  fieldnote:
+    image: wordpress:php8.2-apache
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8081:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: bench
+      WORDPRESS_DB_PASSWORD: bench-local-only
+      WORDPRESS_DB_NAME: fieldnote
+    volumes:
+      - ./targets/fieldnote/mu-plugins:/var/www/html/wp-content/mu-plugins
+
+  ashford:
+    image: wordpress:php8.2-apache
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8082:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: bench
+      WORDPRESS_DB_PASSWORD: bench-local-only
+      WORDPRESS_DB_NAME: ashford
+    volumes:
+      - ./targets/ashford/mu-plugins:/var/www/html/wp-content/mu-plugins
+
+  lumen:
+    image: wordpress:php8.2-apache
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8083:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: bench
+      WORDPRESS_DB_PASSWORD: bench-local-only
+      WORDPRESS_DB_NAME: lumen
+    volumes:
+      - ./targets/lumen/mu-plugins:/var/www/html/wp-content/mu-plugins
+
+  waybill:
+    build: ./targets/waybill
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8084:8084"
+    environment:
+      DB_HOST: db
+      DB_USER: bench
+      DB_PASSWORD: bench-local-only
+      DB_NAME: waybill
+
+  halden:
+    build: ./targets/halden
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8085:8085"
+    environment:
+      DB_HOST: db
+      DB_USER: bench
+      DB_PASSWORD: bench-local-only
+      DB_NAME: halden
+      PORT: "8085"
+
+  stockwell:
+    build: ./targets/stockwell
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8086:8086"
+    environment:
+      DB_HOST: db
+      DB_USER: bench
+      DB_PASSWORD: bench-local-only
+      DB_NAME: stockwell
+      PORT: "8086"
+
+  vellum:
+    build: ./targets/vellum
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8087:8087"
+    environment:
+      DB_HOST: db
+      DB_USER: bench
+      DB_PASSWORD: bench-local-only
+      DB_NAME: vellum
+      PORT: "8087"
+
+volumes:
+  db-data:

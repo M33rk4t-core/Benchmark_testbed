@@ -1,0 +1,84 @@
+{
+  "spec_version": 1,
+  "id": "vellum",
+  "title": "Vellum Room",
+  "tier": 7,
+  "stack": "node",
+  "port": 8087,
+  "profile": "Manuscript reading room. Custom elements wrap declarative shadow roots several levels down.",
+  "approximate_tokens": 5000,
+  "sources": ["server.js", "public/room.js", "public/room.css"],
+  "routes": [
+    {"method": "GET", "path": "/reading-room"}
+  ],
+  "parameters": [
+    {
+      "id": "vellum.gloss",
+      "name": "gloss",
+      "in": "query",
+      "method": "GET",
+      "route": "/reading-room",
+      "value_type": "string",
+      "scheme": "raw_passthrough",
+      "control": null,
+      "sink": {
+        "class": "html_body",
+        "encoded": false,
+        "bound": false,
+        "symbol": "shadowCard",
+        "note": "Repeated inside every folio-card declarative shadow root."
+      },
+      "other_uses": [
+        {"class": "html_attribute", "encoded": true, "symbol": "readingRoom"}
+      ]
+    },
+    {
+      "id": "vellum.shelf",
+      "name": "shelf",
+      "in": "query",
+      "method": "GET",
+      "route": "/reading-room",
+      "value_type": "string",
+      "scheme": "bounded_control",
+      "control": "Kept only for west-cloister, east-stack, scriptorium, or annex, then bound in the shelf query.",
+      "sink": {
+        "class": "sql_equality",
+        "encoded": true,
+        "bound": true,
+        "symbol": "readingRoom"
+      }
+    },
+    {
+      "id": "vellum.leaf",
+      "name": "leaf",
+      "in": "query",
+      "method": "GET",
+      "route": "/reading-room",
+      "value_type": "integer",
+      "scheme": "bounded_control",
+      "control": "Parsed as a base-10 integer and clamped to 1..40 before it is written as a current-leaf marker.",
+      "sink": {
+        "class": "html_attribute",
+        "encoded": true,
+        "bound": false,
+        "symbol": "clampInt"
+      }
+    },
+    {
+      "id": "vellum.siglum",
+      "name": "siglum",
+      "in": "query",
+      "method": "GET",
+      "route": "/reading-room",
+      "value_type": "string",
+      "scheme": "bounded_control",
+      "control": "Kept only when it matches 2 to 16 letters, digits, or hyphens, then bound in the lookup and encoded in the link.",
+      "sink": {
+        "class": "sql_equality",
+        "encoded": true,
+        "bound": true,
+        "symbol": "boundedSiglum"
+      }
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+{
+  "spec_version": 1,
+  "id": "stockwell",
+  "title": "Stockwell Register",
+  "tier": 6,
+  "stack": "flask",
+  "port": 8086,
+  "profile": "Municipal asset register with grouped, nested, and multi-row tables.",
+  "approximate_tokens": 4500,
+  "sources": ["app.py", "templates/home.html", "templates/holdings.html", "templates/layout.html"],
+  "routes": [
+    {"method": "GET", "path": "/"},
+    {"method": "GET", "path": "/holdings"}
+  ],
+  "parameters": [
+    {
+      "id": "stockwell.order",
+      "name": "order",
+      "in": "query",
+      "method": "GET",
+      "route": "/holdings",
+      "value_type": "string",
+      "scheme": "raw_passthrough",
+      "control": null,
+      "sink": {
+        "class": "sql_order_by",
+        "encoded": false,
+        "bound": false,
+        "symbol": "holdings"
+      },
+      "other_uses": [
+        {"class": "html_text", "encoded": true, "symbol": "holdings.html"}
+      ]
+    },
+    {
+      "id": "stockwell.q",
+      "name": "q",
+      "in": "query",
+      "method": "GET",
+      "route": "/holdings",
+      "value_type": "string",
+      "scheme": "bounded_control",
+      "control": "Quoted with the connection string escaper before it is placed in the LIKE predicates.",
+      "sink": {
+        "class": "sql_like",
+        "encoded": true,
+        "bound": false,
+        "symbol": "holdings"
+      },
+      "other_uses": [
+        {"class": "html_attribute", "encoded": true, "symbol": "holdings.html"}
+      ]
+    },
+    {
+      "id": "stockwell.status",
+      "name": "status",
+      "in": "query",
+      "method": "GET",
+      "route": "/holdings",
+      "value_type": "string",
+      "scheme": "bounded_control",
+      "control": "Kept only for in_service, in_repair, surplus, or archived, then quoted.",
+      "sink": {
+        "class": "sql_equality",
+        "encoded": true,
+        "bound": false,
+        "symbol": "holdings"
+      }
+    },
+    {
+      "id": "stockwell.page",
+      "name": "page",
+      "in": "query",
+      "method": "GET",
+      "route": "/holdings",
+      "value_type": "integer",
+      "scheme": "bounded_control",
+      "control": "Accepted only as a 1 to 4 digit integer from 1 through 200, then used as a numeric offset.",
+      "sink": {
+        "class": "sql_offset",
+        "encoded": false,
+        "bound": false,
+        "symbol": "parse_page"
+      }
+    }
+  ]
+}

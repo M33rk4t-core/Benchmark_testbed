@@ -1,0 +1,69 @@
+{
+  "spec_version": 1,
+  "id": "lumen",
+  "title": "Lumen Floor",
+  "tier": 3,
+  "stack": "wordpress",
+  "port": 8083,
+  "profile": "Systems monitoring floor. Server-rendered component tree, data attributes, and an embedded configuration script.",
+  "approximate_tokens": 12000,
+  "sources": ["mu-plugins/core.php"],
+  "routes": [
+    {"method": "GET", "path": "/"},
+    {"method": "GET", "path": "/console"}
+  ],
+  "parameters": [
+    {
+      "id": "lumen.headline",
+      "name": "headline",
+      "in": "query",
+      "method": "GET",
+      "route": "/console",
+      "value_type": "string",
+      "scheme": "raw_passthrough",
+      "control": null,
+      "sink": {
+        "class": "javascript_string",
+        "encoded": false,
+        "bound": false,
+        "symbol": "lumen_headline_script"
+      },
+      "other_uses": [
+        {"class": "html_attribute", "encoded": true, "symbol": "lumen_render_console"},
+        {"class": "dom_text", "encoded": true, "symbol": "lumen_hydrate_script"}
+      ]
+    },
+    {
+      "id": "lumen.region",
+      "name": "region",
+      "in": "query",
+      "method": "GET",
+      "route": "/console",
+      "value_type": "string",
+      "scheme": "bounded_control",
+      "control": "Kept only when it is one of harbor, estuary, ridge, or basin. Printed with esc_attr and JSON-encoded into the configuration script.",
+      "sink": {
+        "class": "data_attribute",
+        "encoded": true,
+        "bound": false,
+        "symbol": "lumen_render_console"
+      }
+    },
+    {
+      "id": "lumen.hours",
+      "name": "hours",
+      "in": "query",
+      "method": "GET",
+      "route": "/console",
+      "value_type": "integer",
+      "scheme": "bounded_control",
+      "control": "absint, then clamped to 1..24 before the hour lanes are built.",
+      "sink": {
+        "class": "dom_repeat_bound",
+        "encoded": true,
+        "bound": false,
+        "symbol": "lumen_hour_count"
+      }
+    }
+  ]
+}

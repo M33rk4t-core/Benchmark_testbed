@@ -1,0 +1,66 @@
+body {
+  margin: 0;
+  background: #f3e6cf;
+  color: #3a2a22;
+  font: 18px/1.5 Palatino, Georgia, serif;
+}
+main {
+  max-width: 52rem;
+  margin: 0 auto;
+  padding: 1.5rem 1.2rem 3rem;
+}
+.mark {
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  color: #6e1e2a;
+}
+h1 {
+  font-weight: 500;
+  font-size: 2rem;
+  margin: 0.2rem 0 1rem;
+}
+form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  align-items: end;
+  margin-bottom: 1.2rem;
+}
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+}
+input, select, button {
+  font: inherit;
+}
+input, select {
+  border: 1px solid #3a2a22;
+  background: #fffaf2;
+  padding: 0.4rem 0.5rem;
+}
+button {
+  background: #6e1e2a;
+  color: #fffaf2;
+  border: 0;
+  padding: 0.5rem 0.8rem;
+}
+archive-room, wing-block, bay-row, shelf-rail, gathering-set, folio-card {
+  display: block;
+}
+wing-block {
+  border-left: 3px solid #6e1e2a;
+  padding-left: 0.8rem;
+}
+bay-row, shelf-rail, gathering-set {
+  margin-top: 0.6rem;
+}
+folio-card {
+  margin: 0.7rem 0;
+  background: #fffaf2;
+}
+.desk-note {
+  color: #5c463c;
+}

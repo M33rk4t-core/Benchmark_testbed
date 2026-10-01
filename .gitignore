@@ -1,0 +1,7 @@
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+mysql-data/
+snapshots/*.html
+.install-*.sh

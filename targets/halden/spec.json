@@ -1,0 +1,110 @@
+{
+  "spec_version": 1,
+  "id": "halden",
+  "title": "Halden Seminar",
+  "tier": 5,
+  "stack": "express",
+  "port": 8085,
+  "profile": "Three-step visiting scholar application. Values move through the session before the review sheet.",
+  "approximate_tokens": 900,
+  "sources": ["server.js"],
+  "routes": [
+    {"method": "GET", "path": "/apply"},
+    {"method": "POST", "path": "/apply/profile"},
+    {"method": "GET", "path": "/apply/materials"},
+    {"method": "POST", "path": "/apply/materials"},
+    {"method": "GET", "path": "/apply/review"}
+  ],
+  "parameters": [
+    {
+      "id": "halden.advisor",
+      "name": "advisor",
+      "in": "body",
+      "method": "POST",
+      "submit_route": "/apply/profile",
+      "emit_route": "/apply/review",
+      "carried_by": "session",
+      "value_type": "string",
+      "scheme": "raw_passthrough",
+      "control": null,
+      "sink": {
+        "class": "html_body",
+        "encoded": false,
+        "bound": false,
+        "symbol": "reviewMarkup"
+      }
+    },
+    {
+      "id": "halden.program",
+      "name": "program",
+      "in": "body",
+      "method": "POST",
+      "submit_route": "/apply/profile",
+      "emit_route": "/apply/review",
+      "carried_by": "session",
+      "value_type": "string",
+      "scheme": "bounded_control",
+      "control": "Stored only when a placeholder query finds the code in hs_programs.",
+      "sink": {
+        "class": "sql_lookup",
+        "encoded": true,
+        "bound": true,
+        "symbol": "acceptProfile"
+      }
+    },
+    {
+      "id": "halden.pages",
+      "name": "pages",
+      "in": "body",
+      "method": "POST",
+      "submit_route": "/apply/profile",
+      "emit_route": "/apply/review",
+      "carried_by": "session",
+      "value_type": "integer",
+      "scheme": "bounded_control",
+      "control": "Accepted only as a base-10 integer from 1 through 80.",
+      "sink": {
+        "class": "session_number",
+        "encoded": true,
+        "bound": false,
+        "symbol": "strictInt"
+      }
+    },
+    {
+      "id": "halden.statement",
+      "name": "statement",
+      "in": "body",
+      "method": "POST",
+      "submit_route": "/apply/materials",
+      "emit_route": "/apply/review",
+      "carried_by": "session",
+      "value_type": "string",
+      "scheme": "bounded_control",
+      "control": "Rejected above 4000 characters. Encoded when the review sheet is rendered.",
+      "sink": {
+        "class": "html_body",
+        "encoded": true,
+        "bound": false,
+        "symbol": "reviewMarkup"
+      }
+    },
+    {
+      "id": "halden.copies",
+      "name": "copies",
+      "in": "body",
+      "method": "POST",
+      "submit_route": "/apply/materials",
+      "emit_route": "/apply/review",
+      "carried_by": "session",
+      "value_type": "integer",
+      "scheme": "bounded_control",
+      "control": "Accepted only as a base-10 integer from 1 through 12.",
+      "sink": {
+        "class": "session_number",
+        "encoded": true,
+        "bound": false,
+        "symbol": "strictInt"
+      }
+    }
+  ]
+}

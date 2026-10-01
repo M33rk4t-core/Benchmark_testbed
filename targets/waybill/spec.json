@@ -1,0 +1,53 @@
+{
+  "spec_version": 1,
+  "id": "waybill",
+  "title": "Waybill Desk",
+  "tier": 4,
+  "stack": "fastapi",
+  "port": 8084,
+  "profile": "Single-purpose shipment lookup.",
+  "approximate_tokens": 400,
+  "sources": ["app.py"],
+  "routes": [
+    {"method": "GET", "path": "/"},
+    {"method": "GET", "path": "/track"}
+  ],
+  "parameters": [
+    {
+      "id": "waybill.code",
+      "name": "code",
+      "in": "query",
+      "method": "GET",
+      "route": "/track",
+      "value_type": "string",
+      "scheme": "raw_passthrough",
+      "control": null,
+      "sink": {
+        "class": "sql_interpolation",
+        "encoded": false,
+        "bound": false,
+        "symbol": "track",
+        "note": "Percent signs are doubled so the database driver preserves them. The value is still concatenated into the statement."
+      },
+      "other_uses": [
+        {"class": "html_attribute", "encoded": true, "symbol": "track"}
+      ]
+    },
+    {
+      "id": "waybill.limit",
+      "name": "limit",
+      "in": "query",
+      "method": "GET",
+      "route": "/track",
+      "value_type": "integer",
+      "scheme": "bounded_control",
+      "control": "FastAPI Query enforces an integer from 1 through 20 before the value is used.",
+      "sink": {
+        "class": "sql_limit",
+        "encoded": false,
+        "bound": true,
+        "symbol": "track"
+      }
+    }
+  ]
+}
