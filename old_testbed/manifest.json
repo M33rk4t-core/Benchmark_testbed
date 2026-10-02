@@ -1,0 +1,104 @@
+{
+  "name": "dom-pruner-synthetic-testbed",
+  "endpoints": [
+    {
+      "id": "l1-home",
+      "level": 1,
+      "url": "http://127.0.0.1:5001/",
+      "method": "GET",
+      "expected_param": null,
+      "expected_cwe": null,
+      "is_vulnerable": false
+    },
+    {
+      "id": "l1-search-xss",
+      "level": 1,
+      "url": "http://127.0.0.1:5001/search?q=test",
+      "method": "GET",
+      "expected_param": "q",
+      "expected_cwe": "CWE-79",
+      "is_vulnerable": true
+    },
+    {
+      "id": "l1-user-sqli",
+      "level": 1,
+      "url": "http://127.0.0.1:5001/user?id=1",
+      "method": "GET",
+      "expected_param": "id",
+      "expected_cwe": "CWE-89",
+      "is_vulnerable": true
+    },
+    {
+      "id": "l1-about",
+      "level": 1,
+      "url": "http://127.0.0.1:5001/about",
+      "method": "GET",
+      "expected_param": null,
+      "expected_cwe": null,
+      "is_vulnerable": false
+    },
+    {
+      "id": "l2-home",
+      "level": 2,
+      "url": "http://127.0.0.1:5002/",
+      "method": "GET",
+      "expected_param": null,
+      "expected_cwe": null,
+      "is_vulnerable": false
+    },
+    {
+      "id": "l2-products-sqli",
+      "level": 2,
+      "url": "http://127.0.0.1:5002/products?category=gifts&sort=name",
+      "method": "GET",
+      "expected_param": "category",
+      "expected_cwe": "CWE-89",
+      "is_vulnerable": true
+    },
+    {
+      "id": "l2-contact-csrf",
+      "level": 2,
+      "url": "http://127.0.0.1:5002/contact",
+      "method": "POST",
+      "expected_param": "csrf_token",
+      "expected_cwe": "CWE-352",
+      "is_vulnerable": true
+    },
+    {
+      "id": "l2-directory-safe",
+      "level": 2,
+      "url": "http://127.0.0.1:5002/directory?email=user@example.local",
+      "method": "GET",
+      "expected_param": "email",
+      "expected_cwe": null,
+      "is_vulnerable": false
+    },
+    {
+      "id": "l3-home",
+      "level": 3,
+      "url": "http://127.0.0.1:5003/",
+      "method": "GET",
+      "expected_param": "role",
+      "expected_cwe": "CWE-284",
+      "is_vulnerable": true
+    },
+    {
+      "id": "l3-role-update",
+      "level": 3,
+      "url": "http://127.0.0.1:5003/api/v1/update",
+      "method": "POST",
+      "expected_param": "role",
+      "expected_cwe": "CWE-284",
+      "is_vulnerable": true
+    },
+    {
+      "id": "l3-help",
+      "level": 3,
+      "url": "http://127.0.0.1:5003/help",
+      "method": "GET",
+      "expected_param": null,
+      "expected_cwe": null,
+      "is_vulnerable": false
+    }
+  ]
+}
