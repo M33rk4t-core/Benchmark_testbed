@@ -1,0 +1,51 @@
+{
+  "name": "dom-pruner-synthetic-testbed",
+  "app": "brinehouse",
+  "endpoints": [
+    {
+      "id": "brinehouse-home",
+      "level": 1,
+      "url": "http://127.0.0.1:8089/",
+      "method": "GET",
+      "expected_param": null,
+      "expected_cwe": null,
+      "is_vulnerable": false
+    },
+    {
+      "id": "brinehouse-proofs",
+      "level": 1,
+      "url": "http://127.0.0.1:8089/proofs",
+      "method": "GET",
+      "expected_param": null,
+      "expected_cwe": null,
+      "is_vulnerable": false
+    },
+    {
+      "id": "brinehouse-mark-cmdi",
+      "level": 1,
+      "url": "http://127.0.0.1:8089/proofs?mark=test",
+      "method": "GET",
+      "expected_param": "mark",
+      "expected_cwe": "CWE-78",
+      "is_vulnerable": true
+    },
+    {
+      "id": "brinehouse-plate-safe",
+      "level": 1,
+      "url": "http://127.0.0.1:8089/proofs?plate=harbor-01.txt",
+      "method": "GET",
+      "expected_param": "plate",
+      "expected_cwe": null,
+      "is_vulnerable": false
+    },
+    {
+      "id": "brinehouse-copies-safe",
+      "level": 1,
+      "url": "http://127.0.0.1:8089/proofs?copies=2",
+      "method": "GET",
+      "expected_param": "copies",
+      "expected_cwe": null,
+      "is_vulnerable": false
+    }
+  ]
+}
