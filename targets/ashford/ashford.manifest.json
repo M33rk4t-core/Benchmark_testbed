@@ -1,0 +1,51 @@
+{
+  "name": "dom-pruner-synthetic-testbed",
+  "app": "ashford",
+  "endpoints": [
+    {
+      "id": "ashford-home",
+      "level": 2,
+      "url": "http://127.0.0.1:8082/",
+      "method": "GET",
+      "expected_param": null,
+      "expected_cwe": null,
+      "is_vulnerable": false
+    },
+    {
+      "id": "ashford-directory",
+      "level": 2,
+      "url": "http://127.0.0.1:8082/directory",
+      "method": "GET",
+      "expected_param": null,
+      "expected_cwe": null,
+      "is_vulnerable": false
+    },
+    {
+      "id": "ashford-notice-xss",
+      "level": 2,
+      "url": "http://127.0.0.1:8082/directory?notice=test",
+      "method": "GET",
+      "expected_param": "notice",
+      "expected_cwe": "CWE-79",
+      "is_vulnerable": true
+    },
+    {
+      "id": "ashford-enrollment-authz",
+      "level": 2,
+      "url": "http://127.0.0.1:8082/directory",
+      "method": "POST",
+      "expected_param": "enrollment",
+      "expected_cwe": "CWE-862",
+      "is_vulnerable": true
+    },
+    {
+      "id": "ashford-portrait-safe",
+      "level": 2,
+      "url": "http://127.0.0.1:8082/directory",
+      "method": "POST",
+      "expected_param": "portrait_url",
+      "expected_cwe": null,
+      "is_vulnerable": false
+    }
+  ]
+}
