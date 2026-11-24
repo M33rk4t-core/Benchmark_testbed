@@ -1,0 +1,42 @@
+{
+  "name": "dom-pruner-synthetic-testbed",
+  "app": "copperplate",
+  "endpoints": [
+    {
+      "id": "copperplate-home",
+      "level": 1,
+      "url": "http://127.0.0.1:8091/",
+      "method": "GET",
+      "expected_param": null,
+      "expected_cwe": null,
+      "is_vulnerable": false
+    },
+    {
+      "id": "copperplate-drawings",
+      "level": 1,
+      "url": "http://127.0.0.1:8091/drawings",
+      "method": "GET",
+      "expected_param": null,
+      "expected_cwe": null,
+      "is_vulnerable": false
+    },
+    {
+      "id": "copperplate-sheet-traversal",
+      "level": 1,
+      "url": "http://127.0.0.1:8091/drawings?sheet=notes.txt",
+      "method": "GET",
+      "expected_param": "sheet",
+      "expected_cwe": "CWE-22",
+      "is_vulnerable": true
+    },
+    {
+      "id": "copperplate-plate-safe",
+      "level": 1,
+      "url": "http://127.0.0.1:8091/drawings?plate=harbor",
+      "method": "GET",
+      "expected_param": "plate",
+      "expected_cwe": null,
+      "is_vulnerable": false
+    }
+  ]
+}
